@@ -102,6 +102,7 @@ _flutter.buildConfig = {"engineRevision":"035316565ad77281a75305515e4682e6c4c6f7
 async function loadFlutterApp() {
   // Build metadata is generated alongside the compiled application.
   let release = Date.now().toString(36);
+  const localPreview = ['localhost', '127.0.0.1'].includes(location.hostname);
   try {
     const response = await fetch(new URL('version.json', document.baseURI), {
       cache: 'no-store',
@@ -109,7 +110,9 @@ async function loadFlutterApp() {
     });
     if (response.ok) {
       const {version, build_number: buildNumber} = await response.json();
-      if (version && buildNumber) release = `${version}+${buildNumber}`;
+      if (version && buildNumber) {
+        release = `${version}+${buildNumber}${localPreview ? `-${release}` : ''}`;
+      }
     }
   } catch (_) {
     // Use a fresh asset URL even when the version manifest is unavailable.
