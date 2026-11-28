@@ -63,6 +63,9 @@ async function loadFlutterApp() {
   }
 
   await _flutter.loader.load({
+    config: {
+      canvasKitBaseUrl: new URL('canvaskit/', document.baseURI).toString(),
+    },
     onEntrypointLoaded: async (engineInitializer) => {
       // Refresh Flutter's icon subset before the engine registers the font.
       await fetch(new URL('assets/fonts/MaterialIcons-Regular.otf', document.baseURI), {
